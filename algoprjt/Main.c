@@ -4,7 +4,21 @@
 
 int main(int argc, char* argv[])
 {
-	SDL_Init(SDL_INIT_EVERYTHING);
+    SDL_Window* window = NULL;
+    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+    {
+        SDL_Log("erreur initialisation SDL -> %s\n", SDL_GetError());
+
+    }
+      
+       
+    window = SDL_CreateWindow("la liste avec SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, 0);
+        if (window == NULL)
+    {
+            SDL_Log("creation une fenetre echouee -> %s\n", SDL_GetError());
+    }
+        SDL_Quit();
+
     struct Noeud* tete = NULL;
 
     // Insertion d'éléments non triés

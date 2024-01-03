@@ -134,10 +134,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Liste.c" />
+    <ClCompile Include="liste2.c" />
     <ClCompile Include="Main.c" />
+    <ClCompile Include="Main2.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Liste.h" />
+    <ClInclude Include="liste2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
