@@ -11,19 +11,30 @@ int main(int argc, char* argv[])
        
 
        
+
+    SDL_Window* window;
     SDL_Init(SDL_INIT_VIDEO);
-    TTF_Init();
 
-    SDL_Window* fenetre = SDL_CreateWindow("Liste Chainée avec SDL",
+    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    {
+        SDL_Log("erreur", SDL_GetError());
+    }
+    window = SDL_CreateWindow("sdl avec les liste",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        800, 600,
+        1000,
+        1000,
         SDL_WINDOW_SHOWN);
-    SDL_Renderer* renderer = SDL_CreateRenderer(fenetre, -1, SDL_RENDERER_ACCELERATED);
+        SDL_Delay(8000);
+        SDL_DestroyWindow(window);
+        SDL_QUIT;
+        
+        
+        
+      
+        
 
-    TTF_Font *font = TTF_OpenFont("arial.ttf", 20);
-
-    struct Noeud* tete = NULL;
+    struct Noeud *tete = NULL;
 
     // Insertion d'éléments non triés
     insererAuDebut(&tete, 3);
