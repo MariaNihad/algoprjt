@@ -133,7 +133,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Liste.c" />
     <ClCompile Include="Main.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Liste.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
