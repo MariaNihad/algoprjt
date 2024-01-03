@@ -6,12 +6,6 @@
 
 int main(int argc, char* argv[])
 {
-    
-      
-       
-
-       
-
     SDL_Window* window;
     SDL_Init(SDL_INIT_VIDEO);
 
@@ -28,10 +22,6 @@ int main(int argc, char* argv[])
         SDL_Delay(8000);
         SDL_DestroyWindow(window);
         SDL_QUIT;
-        
-        
-        
-      
         
 
     struct Noeud *tete = NULL;
