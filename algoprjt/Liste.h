@@ -12,13 +12,13 @@ struct Noeud* creerNoeud(int valeur);
 // Fonction pour insérer un élément au début de la liste
 void insererAuDebut(struct Noeud** tete, int valeur);
 
-// Fonction pour insérer un élément à la fin de la liste
+// Fonction pour insérer un element a la fin de la liste
 void insererALaFin(struct Noeud** tete, int valeur);
 
-// Fonction pour supprimer un élément au début de la liste
+// Fonction pour supprimer un element au debut de la liste
 void supprimerAuDebut(struct Noeud** tete);
 
-// Fonction pour supprimer un élément à la fin de la liste
+// Fonction pour supprimer un élément a la fin de la liste
 void supprimerALaFin(struct Noeud** tete);
 
 // Fonction pour rechercher un élément dans la liste
