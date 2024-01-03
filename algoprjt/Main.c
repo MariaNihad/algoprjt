@@ -2,22 +2,26 @@
 #include <SDL.h>
 #include "Liste.h"
 
+
+
 int main(int argc, char* argv[])
 {
-    SDL_Window* window = NULL;
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
-    {
-        SDL_Log("erreur initialisation SDL -> %s\n", SDL_GetError());
-
-    }
+    
       
        
-    window = SDL_CreateWindow("la liste avec SDL", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, 0);
-        if (window == NULL)
-    {
-            SDL_Log("creation une fenetre echouee -> %s\n", SDL_GetError());
-    }
-        SDL_Quit();
+
+       
+    SDL_Init(SDL_INIT_VIDEO);
+    TTF_Init();
+
+    SDL_Window* fenetre = SDL_CreateWindow("Liste Chainée avec SDL",
+        SDL_WINDOWPOS_CENTERED,
+        SDL_WINDOWPOS_CENTERED,
+        800, 600,
+        SDL_WINDOW_SHOWN);
+    SDL_Renderer* renderer = SDL_CreateRenderer(fenetre, -1, SDL_RENDERER_ACCELERATED);
+
+    TTF_Font *font = TTF_OpenFont("arial.ttf", 20);
 
     struct Noeud* tete = NULL;
 
@@ -60,4 +64,5 @@ int main(int argc, char* argv[])
     afficherListe(tete);
 
     return 0;
+
 }
