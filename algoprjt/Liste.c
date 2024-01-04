@@ -125,4 +125,7 @@ void afficherListe(struct Noeud* tete) {
         courant = courant->suivant;
     }
     printf("NULL\n");
+
 }
+
+

@@ -6,7 +6,7 @@
 
 int main(int argc, char* argv[])
 {
-    SDL_Window* window;
+    SDL_Window *window;
     SDL_Init(SDL_INIT_VIDEO);
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
@@ -16,15 +16,15 @@ int main(int argc, char* argv[])
     window = SDL_CreateWindow("sdl avec les liste",
         SDL_WINDOWPOS_CENTERED,
         SDL_WINDOWPOS_CENTERED,
-        1000,
-        1000,
+        800,
+        700,
         SDL_WINDOW_SHOWN);
         SDL_DestroyWindow(window);
+        SDL_Delay(7000);
         SDL_QUIT;
         
 
     struct Noeud *tete = NULL;
-
     // Insertion d'éléments non triés
     insererAuDebut(&tete, 3);
     insererAuDebut(&tete, 1);
