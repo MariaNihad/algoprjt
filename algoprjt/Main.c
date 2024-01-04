@@ -6,22 +6,30 @@
 
 int main(int argc, char* argv[])
 {
-    SDL_Window *window;
+    SDL_Window* window;
+    SDL_Renderer* renderer;
     SDL_Init(SDL_INIT_VIDEO);
 
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         SDL_Log("erreur", SDL_GetError());
     }
-    window = SDL_CreateWindow("sdl avec les liste",
-        SDL_WINDOWPOS_CENTERED,
-        SDL_WINDOWPOS_CENTERED,
-        800,
-        700,
-        SDL_WINDOW_SHOWN);
-        SDL_DestroyWindow(window);
-        SDL_Delay(7000);
-        SDL_QUIT;
+
+    SDL_Delay(7000);
+
+    window = SDL_CreateWindowAndRenderer(400,300,0, &window ,&renderer);
+
+    SDL_RenderSetScale(renderer,4 ,4);
+
+    SDL_SetRenderDrawColor(renderer,0,0,0,255);
+    SDL_RenderClear(renderer);
+
+  
+    SDL_SetRenderDrawColor(renderer,255,255,255,255);
+    SDL_RenderDrawPoint(renderer,320,280);
+    SDL_RenderPresent(renderer);
+    SDL_Delay(5000);
+      SDL_QUIT;
         
 
     struct Noeud *tete = NULL;
