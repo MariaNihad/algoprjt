@@ -30,6 +30,26 @@ int main(int argc, char* argv[])
     SDL_RenderPresent(renderer);
     SDL_Delay(5000);
       SDL_QUIT;
+      SDL_Event e;
+      int quit = 0;
+      while (!quit) {
+          while (SDL_PollEvent(&e) != 0) {
+              if (e.type == SDL_QUIT) {
+                  quit = 1;
+              }
+          }
+
+          // Draw the linked list
+          drawLinkedList(renderer, head);
+
+          SDL_Delay(1000); // Add delay to make visualization visible
+      }
+
+      // Clean up
+      SDL_DestroyRenderer(renderer);
+      SDL_DestroyWindow(window);
+      SDL_Quit();
+
         
 
     struct Noeud *tete = NULL;
