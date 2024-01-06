@@ -31,6 +31,8 @@ int main(int argc, char* argv[])
     SDL_Delay(5000);
       SDL_QUIT;
       SDL_Event e;
+     
+      SDL_Event e;
       int quit = 0;
       while (!quit) {
           while (SDL_PollEvent(&e) != 0) {
@@ -39,13 +41,15 @@ int main(int argc, char* argv[])
               }
           }
 
-          // Draw the linked list
-          drawLinkedList(renderer, head);
+              drawLinkedList(renderer, tete );
 
-          SDL_Delay(1000); // Add delay to make visualization visible
+          SDL_Delay(1000); 
       }
 
-      // Clean up
+      SDL_DestroyRenderer(renderer);
+      SDL_DestroyWindow(window);
+      SDL_Quit();
+
       SDL_DestroyRenderer(renderer);
       SDL_DestroyWindow(window);
       SDL_Quit();

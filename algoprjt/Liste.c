@@ -111,10 +111,7 @@ void trierParInsertion(struct Noeud** tete) {
         }
 
         courant = suivant;
-    }
-
-    // Mettre à jour la tête de la liste avec la liste triée
-    *tete = listeTriee;
+    }*tete = listeTriee;
 }
 
 // Fonction pour afficher les éléments de la liste
@@ -126,3 +123,22 @@ void afficherListe(struct Noeud* tete) {
     }
     printf("NULL\n");
 }
+
+
+
+    void sdl(SDL_Renderer * renderer, Noeud * tete) {
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_RenderClear(renderer);
+
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+
+        int x = 10;
+        while (tete != NULL) {
+            SDL_Rect rect = { x, 50, 30, tete->data * 5 };
+            SDL_RenderFillRect(renderer, &rect);
+            x += 40;
+            tete = tete->suivant;
+        }
+
+        SDL_RenderPresent(renderer);
+    }
