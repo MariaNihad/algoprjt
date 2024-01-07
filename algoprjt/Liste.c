@@ -4,8 +4,8 @@
 #include "Liste.h"
 
 // Fonction pour créer un nouveau nœud
-struct Noeud* creerNoeud(int valeur) {
-    struct Noeud* nouveauNoeud = (struct Noeud*)malloc(sizeof(struct Noeud));
+ Noeud* creerNoeud(int valeur) {
+    Noeud* nouveauNoeud = ( Noeud*)malloc(sizeof( Noeud));
     if (nouveauNoeud == NULL) {
         printf("Erreur d'allocation de mémoire.\n");
         exit(EXIT_FAILURE);
@@ -16,20 +16,20 @@ struct Noeud* creerNoeud(int valeur) {
 }
 
 // Fonction pour insérer un élément au début de la liste
-void insererAuDebut(struct Noeud** tete, int valeur) {
-    struct Noeud* nouveauNoeud = creerNoeud(valeur);
+void insererAuDebut( Noeud** tete, int valeur) {
+     Noeud* nouveauNoeud = creerNoeud(valeur);
     nouveauNoeud->suivant = *tete;
     *tete = nouveauNoeud;
 }
 
 // Fonction pour insérer un élément à la fin de la liste
-void insererALaFin(struct Noeud** tete, int valeur) {
-    struct Noeud* nouveauNoeud = creerNoeud(valeur);
+void insererALaFin( Noeud** tete, int valeur) {
+     Noeud* nouveauNoeud = creerNoeud(valeur);
     if (*tete == NULL) {
         *tete = nouveauNoeud;
     }
     else {
-        struct Noeud* courant = *tete;
+         Noeud* courant = *tete;
         while (courant->suivant != NULL) {
             courant = courant->suivant;
         }
@@ -38,9 +38,9 @@ void insererALaFin(struct Noeud** tete, int valeur) {
 }
 
 // Fonction pour supprimer un élément au début de la liste
-void supprimerAuDebut(struct Noeud** tete) {
+void supprimerAuDebut( Noeud** tete) {
     if (*tete != NULL) {
-        struct Noeud* temp = *tete;
+         Noeud* temp = *tete;
         *tete = (*tete)->suivant;
         free(temp);
     }
@@ -50,15 +50,15 @@ void supprimerAuDebut(struct Noeud** tete) {
 }
 
 // Fonction pour supprimer un élément à la fin de la liste
-void supprimerALaFin(struct Noeud** tete) {
+void supprimerALaFin( Noeud** tete) {
     if (*tete != NULL) {
         if ((*tete)->suivant == NULL) {
             free(*tete);
             *tete = NULL;
         }
         else {
-            struct Noeud* courant = *tete;
-            struct Noeud* precedent = NULL;
+           Noeud* courant = *tete;
+           Noeud* precedent = NULL;
             while (courant->suivant != NULL) {
                 precedent = courant;
                 courant = courant->suivant;
@@ -73,8 +73,8 @@ void supprimerALaFin(struct Noeud** tete) {
 }
 
 // Fonction pour rechercher un élément dans la liste
-struct Noeud* rechercherElement(struct Noeud* tete, int valeur) {
-    struct Noeud* courant = tete;
+ Noeud* rechercherElement( Noeud* tete, int valeur) {
+   Noeud* courant = tete;
     while (courant != NULL) {
         if (courant->donnee == valeur) {
             return courant;
@@ -85,16 +85,16 @@ struct Noeud* rechercherElement(struct Noeud* tete, int valeur) {
 }
 
 // Fonction pour trier la liste par insertion
-void trierParInsertion(struct Noeud** tete) {
+void trierParInsertion( Noeud** tete) {
     if (*tete == NULL || (*tete)->suivant == NULL) {
         return; // La liste est déjà triée
     }
 
-    struct Noeud* listeTriee = NULL;
-    struct Noeud* courant = *tete;
+   Noeud* listeTriee = NULL;
+   Noeud* courant = *tete;
 
     while (courant != NULL) {
-        struct Noeud* suivant = courant->suivant;
+       Noeud* suivant = courant->suivant;
 
         // Insérer le nœud courant dans la liste triée
         if (listeTriee == NULL || listeTriee->donnee > courant->donnee) {
@@ -102,7 +102,7 @@ void trierParInsertion(struct Noeud** tete) {
             listeTriee = courant;
         }
         else {
-            struct Noeud* precedent = listeTriee;
+        Noeud* precedent = listeTriee;
             while (precedent->suivant != NULL && precedent->suivant->donnee < courant->donnee) {
                 precedent = precedent->suivant;
             }
@@ -115,8 +115,8 @@ void trierParInsertion(struct Noeud** tete) {
 }
 
 // Fonction pour afficher les éléments de la liste
-void afficherListe(struct Noeud* tete) {
-    struct Noeud* courant = tete;
+void afficherListe( Noeud* tete) {
+    Noeud* courant = tete;
     while (courant != NULL) {
         printf("%d -> ", courant->donnee);
         courant = courant->suivant;
