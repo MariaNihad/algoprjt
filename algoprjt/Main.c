@@ -1,5 +1,4 @@
 
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
@@ -44,7 +43,7 @@ typedef struct {
     char text[MAX_TEXT_LENGTH];
     SDL_Rect rect;
     SDL_Color color;
-    TTF_Font* font;
+    
     SDL_Texture* texture;
     int isFocused;
 } InputText;
@@ -54,7 +53,6 @@ int fenetre_ouverte = FALSE;
 int isCreerPressed = 0, isAjouterPressed = 0, isSupprimerPressed = 0, isTrierPressed = 0, isOKPressed = 0;
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
-TTF_Font* font = NULL;
 Button_Text creer, ajouter, supprimer, trier, ok;
 Element_Liste liste[100];
 int nbrElements = 0;
@@ -104,7 +102,7 @@ void initButton(Button_Text* button, SDL_Renderer* renderer, const char* text, i
     button->text = strdup(text);
 
     // Charger le font
-    TTF_Font* font2 = TTF_OpenFont("fonts/times.ttf", 12);
+  
 
     // Créer une surface avec le texte
     SDL_Surface* surface = TTF_RenderText_Solid(font2, text, button->color);
@@ -127,11 +125,125 @@ void renderButtonText(Button_Text* button, SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, button->texture, NULL, &button->rect);
 }
 
+// Libérer le bouton
+void freeButton(Button_Text* button) {
+    free(button->text);
+    //SDL_DestroyTexture(button->texture);
+}
 
+// Initialiser un bouton de la liste
+void initElementListe(Element_Liste* button, SDL_Renderer* renderer, const char* text, int x, int y, int w, int h) {
+    // Positions et Mesures du bouton
+    button->bouton.rect.x = x;
+    button->bouton.rect.y = y;
+    button->bouton.rect.w = w;
+    button->bouton.rect.h = h;
+    button->border.xStart = x;
+    button->border.yStart = y;
+    button->border.xEnd = x + w;
+    button->border.yEnd = y + h;
 
+    // La couleur du texte bouton
+    button->bouton.color = (SDL_Color){ 0, 0, 0, 255 };
+
+    // La copie du texte au boutton
+    button->bouton.text = strdup(text);
+
+    // La copie de la valeur
+    button->valeur = atoi(text);
+
+    // Charger le font
+    
+
+    // Créer une surface avec le texte
+    SDL_Surface* surface = TTF_RenderText_Solid(font2, text, button->bouton.color);
+
+    // Créer une texture à partir de la surface
+    button->bouton.texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+    // Libérer la mémoire de la surface et fermer le font
+    SDL_FreeSurface(surface);
+    TTF_CloseFont(font2);
+}
+
+// Création du rendu du bouton
+void renderElementListe(Element_Liste* button, SDL_Renderer* renderer, int r, int g, int b) {
+    // Rendu arrière plan du bouton
+    SDL_SetRenderDrawColor(renderer, button->bouton.color.r, button->bouton.color.g, button->bouton.color.b, button->bouton.color.a);
+    SDL_RenderFillRect(renderer, &button->bouton.rect);
+
+    // Rendu du texte du bouton
+    SDL_RenderCopy(renderer, button->bouton.texture, NULL, &button->bouton.rect);
+
+    // Bordure
+    SDL_SetRenderDrawColor(renderer, r, g, b, 255);
+    SDL_RenderDrawLine(renderer, button->border.xStart, button->border.yStart, button->border.xEnd, button->border.yStart);
+    SDL_RenderDrawLine(renderer, button->border.xEnd, button->border.yStart, button->border.xEnd, button->border.yEnd);
+    SDL_RenderDrawLine(renderer, button->border.xEnd, button->border.yEnd, button->border.xStart, button->border.yEnd);
+    SDL_RenderDrawLine(renderer, button->border.xStart, button->border.yEnd, button->border.xStart, button->border.yStart);
+}
+
+// Libérer l'élément de la liste
+void freeElementListe(Element_Liste* button) {
+    free(button->bouton.text);
+    //SDL_DestroyTexture(button->bouton.texture);
+}
+
+// Une fonction qui donne le focus ç un champ de texte
+void setFocus(InputText* inputText) {
+    inputText->isFocused = 1;
+}
+
+void clearFocus(InputText* inputText1) {
+    inputText1->isFocused = 0;
+}
+
+void initInputText(InputText* inputText, SDL_Renderer* renderer, int x, int y, int w, int h) {
+    inputText->rect.x = x;
+    inputText->rect.y = y;
+    inputText->rect.w = w;
+    inputText->rect.h = h;
+    inputText->color = (SDL_Color){ 0, 0, 0, 255 };
+    inputText->font = TTF_OpenFont("fonts/times.ttf", 18);
+
+    strcpy(inputText->text, "");
+    SDL_Surface* surface = TTF_RenderText_Solid(inputText->font, inputText->text, inputText->color);
+    inputText->texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_FreeSurface(surface);
+    inputText->isFocused = 0;
+}
+
+void handleInputText(InputText* inputText, SDL_Event* e) {
+    if (inputText->isFocused) {
+        if (e->type == SDL_KEYDOWN) {
+            // Handle backspace
+            if (e->key.keysym.sym == SDLK_BACKSPACE && strlen(inputText->text) > 0) {
+                inputText->text[strlen(inputText->text) - 1] = '\0';
+            }
+            // Handle other key presses
+            else if (isdigit(SDL_GetKeyName(e->key.keysym.sym)[0]) && strlen(inputText->text) < MAX_TEXT_LENGTH - 1) {
+                strcat(inputText->text, SDL_GetKeyName(e->key.keysym.sym));
+            }
+
+            SDL_Surface* surface = TTF_RenderText_Solid(inputText->font, inputText->text, inputText->color);
+            SDL_DestroyTexture(inputText->texture);
+            inputText->texture = SDL_CreateTextureFromSurface(SDL_GetRenderer(SDL_GetWindowFromID(e->key.windowID)), surface);
+            SDL_FreeSurface(surface);
+        }
+    }
+}
+
+void renderInputText(InputText* inputText, SDL_Renderer* renderer, int r, int v, int b) {
+    SDL_SetRenderDrawColor(renderer, r, v, b, 255);
+    SDL_RenderFillRect(renderer, &inputText->rect);
+    SDL_RenderCopy(renderer, inputText->texture, NULL, &inputText->rect);
+}
+
+v
 
 // Fonction principale
-int main() {
+int main()
+{
 
     fenetre_ouverte = initialiser_window();
 
@@ -189,6 +301,4 @@ int main() {
     */
 
     return 0;
-}
-
 }
