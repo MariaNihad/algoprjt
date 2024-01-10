@@ -36,7 +36,17 @@ void insererALaFin( Noeud** tete, int valeur) {
         courant->suivant = nouveauNoeud;
     }
 }
-
+// Fonction pour supprimer un élément au début de la liste
+void supprimerAuDebut(Noeud * *tete) {
+    if (*tete != NULL) {
+        Noeud* temp = *tete;
+        *tete = (*tete)->suivant;
+        free(temp);
+    }
+    else {
+        printf("La liste est vide. Impossible de supprimer.\n");
+    }
+}
 
 // Fonction pour supprimer un élément à la fin de la liste
 void supprimerALaFin( Noeud** tete) {
