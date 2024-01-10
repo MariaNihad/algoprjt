@@ -1,10 +1,8 @@
-
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
 #include <SDL.h>
-
+#include <SDL_ttf.h>
 
 
 #include "Liste.h"
@@ -127,67 +125,67 @@ void renderButtonText(Button_Text* button, SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, button->texture, NULL, &button->rect);
 }
 
+// Libérer le bouton
+void freeButton(Button_Text* button) {
+    free(button->text);
+    //SDL_DestroyTexture(button->texture);
+}
 
+// Initialiser un bouton de la liste
+void initElementListe(Element_Liste* button, SDL_Renderer* renderer, const char* text, int x, int y, int w, int h) {
+    // Positions et Mesures du bouton
+    button->bouton.rect.x = x;
+    button->bouton.rect.y = y;
+    button->bouton.rect.w = w;
+    button->bouton.rect.h = h;
+    button->border.xStart = x;
+    button->border.yStart = y;
+    button->border.xEnd = x + w;
+    button->border.yEnd = y + h;
 
+    // La couleur du texte bouton
+    button->bouton.color = (SDL_Color){ 0, 0, 0, 255 };
 
-// Fonction principale
-int main() {
+    // La copie du texte au boutton
+    button->bouton.text = strdup(text);
 
-    fenetre_ouverte = initialiser_window();
+    // La copie de la valeur
+    button->valeur = atoi(text);
 
-    installer();
+    // Charger le font
+    TTF_Font* font2 = TTF_OpenFont("fonts/times.ttf", 12);
 
-    while (fenetre_ouverte)
-    {
-        entrees_processus();
-        mise_a_jour();
-        rendu();
-    }
+    // Créer une surface avec le texte
+    SDL_Surface* surface = TTF_RenderText_Solid(font2, text, button->bouton.color);
 
-    destruction_fenetre();
+    // Créer une texture à partir de la surface
+    button->bouton.texture = SDL_CreateTextureFromSurface(renderer, surface);
 
-    /*
-    Noeud* tete = NULL;
+    // Libérer la mémoire de la surface et fermer le font
+    SDL_FreeSurface(surface);
+    TTF_CloseFont(font2);
+}
 
-    // Insertion d'éléments non triés
-    insererAuDebut(&tete, 3);
-    insererAuDebut(&tete, 1);
-    insererAuDebut(&tete, 2);
-    insererAuDebut(&tete, 5);
-    insererAuDebut(&tete, 4);
+// Création du rendu du bouton
+void renderElementListe(Element_Liste* button, SDL_Renderer* renderer, int r, int g, int b) {
+    // Rendu arrière plan du bouton
+    SDL_SetRenderDrawColor(renderer, button->bouton.color.r, button->bouton.color.g, button->bouton.color.b, button->bouton.color.a);
+    SDL_RenderFillRect(renderer, &button->bouton.rect);
 
-    // Affichage avant les opérations
-    printf("Liste avant les opérations : ");
-    afficherListe(tete);
+    // Rendu du texte du bouton
+    SDL_RenderCopy(renderer, button->bouton.texture, NULL, &button->bouton.rect);
 
-    // Recherche d'un élément
-    int valeurRecherchee = 3;
-    Noeud* elementRecherche = rechercherElement(tete, valeurRecherchee);
-    if (elementRecherche != NULL) {
-        printf("Element %d trouve dans la liste.\n", valeurRecherchee);
-    }
-    else {
-        printf("Element %d non trouve dans la liste.\n", valeurRecherchee);
-    }
+    // Bordure
+    SDL_SetRenderDrawColor(renderer, r, g, b, 255);
+    SDL_RenderDrawLine(renderer, button->border.xStart, button->border.yStart, button->border.xEnd, button->border.yStart);
+    SDL_RenderDrawLine(renderer, button->border.xEnd, button->border.yStart, button->border.xEnd, button->border.yEnd);
+    SDL_RenderDrawLine(renderer, button->border.xEnd, button->border.yEnd, button->border.xStart, button->border.yEnd);
+    SDL_RenderDrawLine(renderer, button->border.xStart, button->border.yEnd, button->border.xStart, button->border.yStart);
+}
 
-    // Tri par insertion
-    trierParInsertion(&tete);
-
-    // Affichage après le tri
-    printf("Liste après le tri par insertion : ");
-    afficherListe(tete);
-
-    // Suppression au début
-    supprimerAuDebut(&tete);
-
-    // Suppression à la fin
-    supprimerALaFin(&tete);
-
-    // Affichage après les suppressions
-    printf("Liste après les suppressions : ");
-    afficherListe(tete);
-    */
-
-    return 0;
+// Libérer l'élément de la liste
+void freeElementListe(Element_Liste* button) {
+    free(button->bouton.text);
+    //SDL_DestroyTexture(button->bouton.texture);
 }
 

@@ -69,8 +69,47 @@ void supprimerALaFin( Noeud** tete) {
     }
     else {
         printf("La liste est vide. Impossible de supprimer.\n");
+
     }
 }
+// Fonction pour supprimer un élément donné de la liste, il retourne la position du noeud sinon -1
+int supprimerValeur(Noeud** tete, int valeur)
+{
+    if (*tete != NULL)
+    {
+        if ((*tete)->donnee == valeur)
+        {
+            supprimerAuDebut(tete);
+            return 0;
+        }
+        int pos = 0;
+        Noeud* courant = *tete;
+        Noeud* precedent = NULL;
+        while (courant->donnee != valeur && courant->suivant != NULL) {
+            precedent = courant;
+            courant = courant->suivant;
+            pos++;
+        }
+        if (courant->donnee == valeur)
+        {
+            if (precedent != NULL)
+            {
+                precedent->suivant = courant->suivant;
+            }
+            free(courant);
+            return pos;
+        }
+        else {
+            printf("L'element recherche n'existe pas.\n");
+            return -1;
+        }
+    }
+    else {
+        printf("La liste est vide. Impossible de supprimer.\n");
+        return -1;
+    }
+}
+
 
 // Fonction pour rechercher un élément dans la liste
  Noeud* rechercherElement( Noeud* tete, int valeur) {
