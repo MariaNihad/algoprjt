@@ -36,11 +36,10 @@ void insererALaFin( Noeud** tete, int valeur) {
         courant->suivant = nouveauNoeud;
     }
 }
-
 // Fonction pour supprimer un élément au début de la liste
-void supprimerAuDebut( Noeud** tete) {
+void supprimerAuDebut(Noeud * *tete) {
     if (*tete != NULL) {
-         Noeud* temp = *tete;
+        Noeud* temp = *tete;
         *tete = (*tete)->suivant;
         free(temp);
     }
