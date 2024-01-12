@@ -660,4 +660,176 @@ void entrees_processus(void)
         break;
     }
     handleInputText(&inputText1, &event);
+}void mise_a_jour(void)
+{
+    int time_to_sleep = FRAME_TARGET_TIME - (SDL_GetTicks() - last_frame_time);
+    if (time_to_sleep > 0 && time_to_sleep <= FRAME_TARGET_TIME)
+    {
+        SDL_Delay(time_to_sleep);
+    }
+    //while (!SDL_TICKS_PASSED(SDL_GetTicks(), last_frame_time + FRAME_TARGET_TIME));
+
+    float delta_time = (SDL_GetTicks() - last_frame_time) / 1000.0f;
+    last_frame_time = SDL_GetTicks();
 }
+
+void rendu(void)
+{
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderClear(renderer);
+    SDL_Rect menu = { 0, 0, 800, 30 };
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_RenderFillRect(renderer, &menu);
+
+    initButton(&creer, renderer, "Créer (C)", 0, 0, 60, 30);
+
+    if (isCreerPressed) {
+        creer.color = (SDL_Color){ 0, 0, 255, 255 };
+    }
+    else {
+        creer.color = (SDL_Color){ 0, 0, 0, 255 };
+    }
+
+    renderButtonText(&creer, renderer);
+
+    initButton(&ajouter, renderer, "Ajouter (A)", 75, 0, 60, 30);
+
+    if (isAjouterPressed) {
+        ajouter.color = (SDL_Color){ 0, 0, 255, 255 };
+    }
+    else {
+        ajouter.color = (SDL_Color){ 0, 0, 0, 255 };
+    }
+
+    renderButtonText(&ajouter, renderer);
+
+    initButton(&supprimer, renderer, "Supprimer (S)", 150, 0, 70, 30);
+
+    if (isSupprimerPressed) {
+        supprimer.color = (SDL_Color){ 0, 0, 255, 255 };
+    }
+    else {
+        supprimer.color = (SDL_Color){ 0, 0, 0, 255 };
+    }
+
+    renderButtonText(&supprimer, renderer);
+
+    initButton(&trier, renderer, "Trier (T)", 235, 0, 60, 30);
+
+    if (isTrierPressed) {
+        trier.color = (SDL_Color){ 0, 0, 255, 255 };
+    }
+    else {
+        trier.color = (SDL_Color){ 0, 0, 0, 255 };
+    }
+
+    renderButtonText(&trier, renderer);
+
+    initButton(&ok, renderer, "OK", 750, 570, 50, 30);
+
+    if (isOKPressed) {
+        ok.color = (SDL_Color){ 0, 0, 255, 255 };
+    }
+    else {
+        ok.color = (SDL_Color){ 0, 0, 0, 255 };
+    }
+
+    renderButtonText(&ok, renderer);
+
+    renderInputText(&inputText1, renderer, 150, 150, 150);
+    renderInputText(&inputText2, renderer, 255, 255, 255);
+    renderInputText(&inputText3, renderer, 255, 255, 255);
+
+    int i;
+    for (i = 0; i < nbrElements; i++)
+    {
+        if (i < (nbrElements - 1))
+        {
+            liste[i].bouton.color = (SDL_Color){ 255, 255, 255, 255 };
+            renderElementListe(&liste[i], renderer, 0, 0, 0);
+            drawArrow(renderer, (i + 1) * 50 + i * 30 + 50, 215, (i + 1) * 50 + i * 30 + 80, 215);
+        }
+        else
+        {
+            liste[i].bouton.color = (SDL_Color){ 255, 255, 255, 255 };
+            renderElementListe(&liste[i], renderer, 0, 0, 0);
+            drawArrow(renderer, (i + 1) * 50 + i * 30 + 50, 215, (i + 1) * 50 + i * 30 + 80, 215);
+            inputText4.rect.x = (i + 1) * 50 + i * 30 + 85;
+            inputText4.rect.y = 200;
+            renderInputText(&inputText4, renderer, 255, 255, 255);
+        }
+    }
+    SDL_RenderPresent(renderer);
+}
+
+void destruction_fenetre(void)
+{
+    TTF_CloseFont(font);
+    TTF_Quit();
+    freeInputText(&inputText1);
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+}
+
+// Fonction principale
+int main() {
+
+    fenetre_ouverte = initialiser_window();
+
+    installer();
+
+    while (fenetre_ouverte)
+    {
+        entrees_processus();
+        mise_a_jour();
+        rendu();
+    }
+
+    destruction_fenetre();
+
+    /*
+    Noeud* tete = NULL;
+
+    // Insertion d'éléments non triés
+    insererAuDebut(&tete, 3);
+    insererAuDebut(&tete, 1);
+    insererAuDebut(&tete, 2);
+    insererAuDebut(&tete, 5);
+    insererAuDebut(&tete, 4);
+
+    // Affichage avant les opérations
+    printf("Liste avant les opérations : ");
+    afficherListe(tete);
+
+    // Recherche d'un élément
+    int valeurRecherchee = 3;
+    Noeud* elementRecherche = rechercherElement(tete, valeurRecherchee);
+    if (elementRecherche != NULL) {
+        printf("Element %d trouve dans la liste.\n", valeurRecherchee);
+    }
+    else {
+        printf("Element %d non trouve dans la liste.\n", valeurRecherchee);
+    }
+
+    // Tri par insertion
+    trierParInsertion(&tete);
+
+    // Affichage après le tri
+    printf("Liste après le tri par insertion : ");
+    afficherListe(tete);
+
+    // Suppression au début
+    supprimerAuDebut(&tete);
+
+    // Suppression à la fin
+    supprimerALaFin(&tete);
+
+    // Affichage après les suppressions
+    printf("Liste après les suppressions : ");
+    afficherListe(tete);
+    */
+
+    return 0;
+}
+
